@@ -25,10 +25,9 @@ if __name__ == "__main__":
 
     driver:Chrome = Chrome(options=options)
 
-    words:list[str] = []
-    score:int = 0
-
     while True:
+        words:list[str] = []
+        score:int = 0
         driver.get("https://humanbenchmark.com/login")
 
         try:
