@@ -105,8 +105,9 @@ if __name__ == "__main__":
                 current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
                 for current_square in current_squares:
                     for index,square in enumerate(active_squares):                
-                        if(list(current_square.location.values()) == list(square.location.values())):
+                        if(current_square.location == square.location):
                             current_square.click()
+                            active_squares.remove(square)
                             break
             except Exception as e:
                 print(str(e))
