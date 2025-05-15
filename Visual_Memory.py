@@ -101,11 +101,10 @@ if __name__ == "__main__":
                         (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
                     )
                 )
-
-                sleep(5)
+                sleep(3.5)
                 current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
-                for index,square in enumerate(active_squares):
-                    for current_square in current_squares:
+                for current_square in current_squares:
+                    for index,square in enumerate(active_squares):                
                         if(list(current_square.location.values()) == list(square.location.values())):
                             current_square.click()
                             break
