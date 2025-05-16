@@ -75,12 +75,12 @@ if __name__ == "__main__":
         open_visual_memory(driver,logger)
         start_visual_memory_game(driver,logger)
                 
-        while score < 250:
+        while score < 250: # Human benchmar crashes at a score beyond 250, so this is the maximum
             play(driver,logger)
             score += 1
             sleep(1.5)
 
         logger.info("250 levels completed. ")
-        sleep(1_000_000)
+        sleep(300) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
         
         save_score(driver,logger)
