@@ -1,19 +1,23 @@
 import json
 from time import sleep
-from logging import basicConfig,Logger,getLogger
+from logging import Logger,getLogger,FileHandler,Formatter
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Chrome,ChromeOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
+from datetime import datetime
 
-def create_logger():
-    # Create and configure logger
-    basicConfig(filename="Human_Benchmark.log",
-                        format='%(asctime)s %(message)s',
-                        filemode='w')
-    # Creating an object
-    logger:Logger = getLogger()
+def create_logger() -> Logger:
+    logger:Logger = getLogger("HumanBenchmark")
+    logger.setLevel("INFO")  # Ensure it captures INFO and higher
+    # Only add handlers if none exist (avoid duplicate logs)
+    if not logger.handlers:
+        current_day:datetime = datetime.now().strftime("%Y%m%d")
+        file_handler = FileHandler(f"Human_Benchmark_{current_day.year}{current_day.month}{current_day.day}.log", mode="a")
+        formatter = Formatter('%(asctime)s %(message)s')
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
     return logger
 
 def load_configuration() -> tuple[str,str,bool,bool,bool,bool,bool,bool,bool,bool]:
