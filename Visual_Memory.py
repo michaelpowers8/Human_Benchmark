@@ -18,7 +18,7 @@ def open_visual_memory(driver:Chrome,logger:Logger) -> None|Exception:
         logger.critical(f"Visual Memory failed to open. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {e}")
     
-def start_visual_memory_game(driver:Chrome,logger:Logger):
+def start_visual_memory_game(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for the start button to be clickable (10 second timeout)
         start_button:WebElement = WebDriverWait(driver, 10).until(
@@ -41,7 +41,7 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
                 (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
             )
         )
-        sleep(3.5)
+        sleep(3.5) # Delay to ensure active blocks exposing the level have disappeared and the current squares will all be blank
         current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
         for current_square in current_squares:
             for square in active_squares:                
@@ -58,34 +58,37 @@ if __name__ == "__main__":
     filterwarnings('ignore')
     logger:Logger = create_logger()
     driver:Chrome = load_driver(logger)
-    username,password,visual_memory,\
+    username,password,post_test_delay,visual_memory,\
         verbal_memory,typing,number_memory,\
             reaction_time,sequence_memory,\
                 aim_trainer,chimp_test = load_configuration()
-    while True:
-        try:
-            score:int = 0
-            driver.get("https://humanbenchmark.com/login")
+    if(not(visual_memory)):
+        logger.info("Visual Memory set to false in config.json. Terminating program.")
+    else:
+        while True:
+            try:
+                score:int = 0
+                driver.get("https://humanbenchmark.com/login")
 
-            input_username(driver,username,logger)
-            input_password(driver,password,logger)
-            click_login(driver,logger)  
-            
-            sleep(3) # Wait time to ensure full page loads
+                input_username(driver,username,logger)
+                input_password(driver,password,logger)
+                click_login(driver,logger)  
+                
+                sleep(3) # Wait time to ensure full page loads
 
-            open_visual_memory(driver,logger)
-            start_visual_memory_game(driver,logger)
-                    
-            while score < 250: # Human benchmar crashes at a score beyond 250, so this is the maximum
-                play(driver,logger)
-                score += 1
-                sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
+                open_visual_memory(driver,logger)
+                start_visual_memory_game(driver,logger)
+                        
+                while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
+                    play(driver,logger)
+                    score += 1
+                    sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
 
-            logger.info("250 levels completed.")
-            sleep(300) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
-            
-            save_score(driver,logger)
-        except Exception as e:
-            logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")
-            driver.quit()
-            driver:Chrome = load_driver(logger)
+                logger.info("250 levels completed.")
+                sleep(post_test_delay) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
+                
+                save_score(driver,logger)
+            except Exception as e:
+                logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")
+                driver.quit()
+                driver:Chrome = load_driver(logger)
