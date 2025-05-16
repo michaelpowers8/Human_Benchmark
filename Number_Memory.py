@@ -52,7 +52,7 @@ if __name__ == "__main__":
         Number_memory,typing,number_memory,\
             reaction_time,sequence_memory,\
                 aim_trainer,chimp_test = load_configuration()
-    if(not(visual_memory)):
+    if(not(number_memory)):
         logger.info("Visual Memory set to false in config.json. Terminating program.")
     else:
         score:int = 0
