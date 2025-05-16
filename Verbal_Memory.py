@@ -11,8 +11,6 @@ def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[st
     try:
         # Wait for the word container to load
         word:str = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word").text
-        if(len(words)>0 and word==words[-1]):
-            return words,score
         if(word in words):
             # Wait for the button to be clickable and then click it
             try:
