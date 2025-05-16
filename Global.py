@@ -51,6 +51,12 @@ def load_driver(logger:Logger) -> Chrome:
     options.add_argument("--incognito")
     options.add_argument("--disable-plugins-discovery")
     options.add_argument("--start-maximized")
+    options.add_argument("--disable-renderer-backgrounding")
+    options.add_argument("--disable-background-timer-throttling")
+    options.add_argument("--disable-backgrounding-occluded-windows")
+    options.add_argument("--disable-ipc-flooding-protection")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option("useAutomationExtension", False)
 
     driver:Chrome = Chrome(options=options)
     logger.info("Chrome successfully opened")
