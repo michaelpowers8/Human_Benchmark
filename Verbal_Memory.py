@@ -99,8 +99,7 @@ if __name__ == "__main__":
             sleep(0.02)
             if(score%1_000==0):
                 logger.info(f"Current Verbal Memory Score: {score:,.0f}")
-        
-        sleep(post_test_delay)
+
         save_score(driver,logger)
 
         driver.close()
