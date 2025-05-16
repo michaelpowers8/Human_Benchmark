@@ -10,8 +10,10 @@ from Global import *
 def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[str],int]|Exception:
     try:
         # Wait for the word container to load
-        word_element:WebElement = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word")
-        if(word_element.text in words):
+        word:str = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word").text
+        if(not(word==words[-1])):
+            return words,score
+        if(word in words):
             # Wait for the button to be clickable and then click it
             try:
                 seen_button:WebElement = WebDriverWait(driver, 10).until(
@@ -26,7 +28,7 @@ def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[st
                 raise Exception(f"{str(e)}")
         else:
             # Wait for the button to be clickable and then click it
-            words.append(word_element.text)
+            words.append(word.text)
             try:
                 new_button:WebElement = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='NEW']"))
@@ -104,13 +106,11 @@ if __name__ == "__main__":
             
             while score < 9950: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
                 words,score = play(driver,words,score,logger)
-                sleep(0.02)
                 if(score%500==0):
                     logger.info(f"Current Verbal Memory Score: {score:,.0f}")
 
             for _ in range(3):
                 words,score = lose(driver,words,score,logger)
-                sleep(0.02)
 
             sleep(post_test_delay)
             save_score(driver,logger)
