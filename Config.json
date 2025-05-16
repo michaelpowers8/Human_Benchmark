@@ -1,0 +1,13 @@
+{
+    "Username":"my-username@example.com",
+    "Password":"my-password",
+    "Visual_Memory":true,
+    "Verbal_Memory":true,
+    "Typing":true,
+    "Number_Memory":false,
+    "Reaction_Time":false,
+    "Sequence_Memory":false,
+    "Aim_Trainer":false,
+    "Chimp_Test":false,
+    "Post_Test_Score_Delay":1
+}
