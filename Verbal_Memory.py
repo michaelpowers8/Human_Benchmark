@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver import Chrome,ChromeOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.remote.webelement import WebElement
 from time import sleep
 from warnings import filterwarnings
 from Global import *
@@ -9,7 +10,7 @@ from Global import *
 def open_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for the play link to be clickable (10 second timeout)
-        play_link = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/verbal-memory'] svg[data-icon='play-circle']").find_element(By.XPATH, "..")
+        play_link:WebElement = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/verbal-memory'] svg[data-icon='play-circle']").find_element(By.XPATH, "..")
         
         sleep(1)
         # Click the link
@@ -22,7 +23,7 @@ def open_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
 def start_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for the start button to be clickable (10 second timeout)
-        start_button = WebDriverWait(driver, 10).until(
+        start_button:WebElement = WebDriverWait(driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='Start']"))
                     )
         
@@ -37,11 +38,11 @@ def start_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
 def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[str],int]|Exception:
     try:
         # Wait for the word container to load
-        word_element = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word")
+        word_element:WebElement = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word")
         if(word_element.text in words):
             # Wait for the button to be clickable and then click it
             try:
-                seen_button = WebDriverWait(driver, 10).until(
+                seen_button:WebElement = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='SEEN']"))
                 )
                 
@@ -55,7 +56,7 @@ def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[st
             # Wait for the button to be clickable and then click it
             words.append(word_element.text)
             try:
-                new_button = WebDriverWait(driver, 10).until(
+                new_button:WebElement = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='NEW']"))
                 )
                 
