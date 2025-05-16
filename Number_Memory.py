@@ -15,7 +15,6 @@ def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None|Excepti
                 (By.CLASS_NAME, "big-number")
             )
         ).text
-        logger.info(f"Level {level_number:,.0f} -> {big_number} number found.")
 
         # Wait for the input element to be present and interactable
         input_element:WebElement = WebDriverWait(driver, 10+(level_number*3)).until(
@@ -32,6 +31,8 @@ def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None|Excepti
                     )
         submit_button.click()
 
+        if(lose):
+            return None
         # Wait for the start button to be clickable (10 second timeout)
         next_button:WebElement = WebDriverWait(driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='NEXT']"))
@@ -54,25 +55,21 @@ if __name__ == "__main__":
     if(not(visual_memory)):
         logger.info("Visual Memory set to false in config.json. Terminating program.")
     else:
-        try:
-            score:int = 0
-            driver.get("https://humanbenchmark.com/login")
+        score:int = 0
+        driver.get("https://humanbenchmark.com/login")
 
-            input_username(driver,username,logger)
-            input_password(driver,password,logger)
-            click_login(driver,logger)  
-            
-            sleep(3) # Wait time to ensure full page loads
+        input_username(driver,username,logger)
+        input_password(driver,password,logger)
+        click_login(driver,logger)  
+        
+        sleep(3) # Wait time to ensure full page loads
 
-            open_game(driver,logger,"number-memory")
-            start_game(driver,logger)
+        open_game(driver,logger,"number-memory")
+        start_game(driver,logger)
 
-            while(score < 98):
-                play(driver,logger,score+1,False)
-                score += 1
-            play(driver,logger,score+1,True)
-            
-            save_score()
-        except Exception as e:
-            logger.critical(f"Game crashed. Official error: {str(e)}. Terminating the program.")
-            raise Exception(f"Game crashed. Official error: {str(e)}. Terminating the program.")
+        while(score < 98):
+            play(driver,logger,score+1,False)
+            score += 1
+        play(driver,logger,score+1,True)
+        
+        save_score()
