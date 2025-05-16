@@ -49,7 +49,7 @@ def analyze_wpm_results(driver:Chrome,logger:Logger) -> bool|Exception:
         if(wpm_number.isdigit()):
             wpm_number = int(wpm_number)
         save:bool = False
-        if(isinstance(wpm_number,int) and wpm_number>=15000):
+        if(isinstance(wpm_number,int) and wpm_number>=20_000):
             save:bool = True
         logger.info("Words per minute successfully analyzed.")
         return save
