@@ -41,7 +41,9 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
                 (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
             )
         )
-        sleep(3.5) # Delay to ensure active blocks exposing the level have disappeared and the current squares will all be blank
+        WebDriverWait(driver, 5).until(
+            EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.active.css-lxtdud"))
+        )
         current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
         for current_square in current_squares:
             for square in active_squares:                
@@ -83,6 +85,8 @@ if __name__ == "__main__":
                     play(driver,logger)
                     score += 1
                     sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
+                    if(score%25==0):
+                        logger.info(f"Current Visual Memory Score: {score:,.0f}")
 
                 logger.info("250 levels completed.")
                 sleep(post_test_delay) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
