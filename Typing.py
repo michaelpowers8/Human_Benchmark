@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
         sleep(3)
 
-        open_typing(driver,logger)
+        open_game(driver,logger,"typing")
         play(driver,logger)
         
         sleep(post_test_delay)
