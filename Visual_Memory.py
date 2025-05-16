@@ -1,79 +1,24 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver import Chrome,ChromeOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from time import sleep
 from warnings import filterwarnings
+from Global import *
 
-def load_driver() -> Chrome:
-    # WebDriver Chrome
-    options = ChromeOptions()
-    #options.add_argument('--headless=new')
-    # adding argument to disable the AutomationControlled flag 
-    options.add_argument("--disable-blink-features=AutomationControlled") 
-    # exclude the collection of enable-automation switches 
-    options.add_experimental_option("excludeSwitches", ["enable-automation"]) 
-    # turn-off userAutomationExtension 
-    options.add_experimental_option("useAutomationExtension", False)
-    options.add_argument('--disable-extensions')
-    options.add_argument('--profile-directory=Default')
-    options.add_argument("--incognito")
-    options.add_argument("--disable-plugins-discovery")
-    options.add_argument("--start-maximized")
-
-    driver:Chrome = Chrome(options=options)
-    return driver
-
-def input_username(driver:Chrome,username:str) -> None|Exception:
-    try:
-        # Wait for the element to be present (up to 10 seconds)
-        username_field:WebElement = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//input[@name='username']"))
-        )
-        
-        # Interact with the field
-        username_field.click()          # Focus the field
-        username_field.clear()          # Clear existing text (if any)
-        username_field.send_keys(username)  # Type your username
-    except Exception as e:
-        raise Exception(f"Error: {str(e)}")
-    
-def input_password(driver:Chrome,password:str) -> None|Exception:
-    try:
-        # Wait for the element to be present (up to 10 seconds)
-        password_field:WebElement = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//input[@name='password']"))
-        )
-        
-        # Interact with the field
-        password_field.click()          # Focus the field
-        password_field.clear()          # Clear existing text (if any)
-        password_field.send_keys(password)  # Type your username
-        return
-    except Exception as e:
-        raise Exception(f"Error: {str(e)}")
-    
-def click_login(driver:Chrome) -> None|Exception:
-    try:
-        # Wait for the element to be present (up to 10 seconds)
-        login_button = driver.find_element(By.XPATH, "//input[@type='submit' and @value='Login']")
-        login_button.click()
-        return  
-    except Exception as e:
-        raise Exception(f"Error: {str(e)}")
-
-def open_visual_memory(driver:Chrome) -> None|Exception:
+def open_visual_memory(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for the play link to be clickable (10 second timeout)
         play_link:WebElement = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/memory']")
         sleep(0.5)
         # Click the link
         play_link.click()
+        logger.info("Visual Memory successfully opened.")
     except Exception as e:
+        logger.critical(f"Visual Memory failed to open. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {e}")
     
-def start_visual_memory_game(driver:Chrome):
+def start_visual_memory_game(driver:Chrome,logger:Logger):
     try:
         # Wait for the start button to be clickable (10 second timeout)
         start_button:WebElement = WebDriverWait(driver, 10).until(
@@ -83,10 +28,12 @@ def start_visual_memory_game(driver:Chrome):
         sleep(0.5)
         # Click the link
         start_button.click()
+        logger.info("Visual Memory successfully started playing.")
     except Exception as e:
-        print(f"Error: {e}")
+        logger.critical(f"Visual Memory failed to start playing. Terminating program. Official error: {str(e)}")
+        raise Exception(f"Error: {e}")
 
-def play(driver:Chrome) -> None|Exception:
+def play(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for at least one active square to appear
         active_squares = WebDriverWait(driver, 10).until(
@@ -102,38 +49,38 @@ def play(driver:Chrome) -> None|Exception:
                     current_square.click()
                     active_squares.remove(square)
                     break
-        return
+        logger.info("Level successfully completed.")
     except Exception as e:
+        logger.critical(f"Level failed to complete. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {str(e)}")
 
 if __name__ == "__main__":
     filterwarnings('ignore')
-    driver:Chrome = load_driver()
+    logger:Logger = create_logger()
+    driver:Chrome = load_driver(logger)
+    username,password,visual_memory,\
+        verbal_memory,typing,number_memory,\
+            reaction_time,sequence_memory,\
+                aim_trainer,chimp_test = load_configuration()
     while True:
         score:int = 0
         driver.get("https://humanbenchmark.com/login")
 
-        input_username(driver,"micpowers98@gmail.com")
-        input_password(driver,"Idnarb10!!")
-        click_login(driver)  
+        input_username(driver,username)
+        input_password(driver,password)
+        click_login(driver,logger)  
         
         sleep(3)
 
-        open_visual_memory(driver)
-        start_visual_memory_game(driver)
+        open_visual_memory(driver,logger)
+        start_visual_memory_game(driver,logger)
                 
-        while score < 100:
-            play(driver)
+        while score < 250:
+            play(driver,logger)
             score += 1
             sleep(1.5)
 
+        logger.info("250 levels completed. ")
         sleep(1_000_000)
         
-        try:
-            # Wait for button to be clickable (up to 10 seconds)
-            save_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.css-qm6rs9"))
-            )
-            save_button.click()
-        except Exception as e:
-            print(f"Error: {e}")
+        save_score(driver,logger)
