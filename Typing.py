@@ -98,5 +98,4 @@ if __name__ == "__main__":
         if(save):
             save_score(driver,logger)
 
-        driver.quit()
         driver.close()

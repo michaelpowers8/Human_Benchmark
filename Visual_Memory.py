@@ -91,7 +91,6 @@ if __name__ == "__main__":
             sleep(post_test_delay) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
             
             save_score(driver,logger)
-            driver.quit()
             driver.close()
         except Exception as e:
             logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")

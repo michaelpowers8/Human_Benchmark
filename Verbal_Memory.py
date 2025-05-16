@@ -101,5 +101,4 @@ if __name__ == "__main__":
         sleep(post_test_delay)
         save_score(driver,logger)
 
-        driver.quit()
         driver.close()
