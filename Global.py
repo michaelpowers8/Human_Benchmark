@@ -21,6 +21,7 @@ def load_configuration() -> tuple[str,str,bool,bool,bool,bool,bool,bool,bool,boo
         configuration = json.load(file)
     username:str = configuration["Username"]
     password:str = configuration["Password"]
+    post_test_delay:int|float = configuration["Post_Test_Score_Delay"]
     visual_memory:bool = configuration["Visual_Memory"]
     verbal_memory:bool = configuration["Verbal_Memory"]
     typing:bool = configuration["Typing"]
@@ -29,7 +30,7 @@ def load_configuration() -> tuple[str,str,bool,bool,bool,bool,bool,bool,bool,boo
     sequence_memory:bool = configuration["Sequence_Memory"]
     aim_trainer:bool = configuration["Aim_Trainer"]
     chimp_test:bool = configuration["Chimp_Test"]
-    return username,password,visual_memory,verbal_memory,typing,number_memory,reaction_time,sequence_memory,aim_trainer,chimp_test
+    return username,password,post_test_delay,visual_memory,verbal_memory,typing,number_memory,reaction_time,sequence_memory,aim_trainer,chimp_test
 
 def load_driver(logger:Logger) -> Chrome:
     # WebDriver Chrome
