@@ -105,7 +105,6 @@ def lose(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[st
         logger.critical(f"Exception occurred while playing. Official Error: {str(e)}")
         raise Exception(f"{str(e)}")
 
-
 if __name__ == "__main__":
     filterwarnings('ignore')
     logger:Logger = create_logger()
@@ -117,29 +116,33 @@ if __name__ == "__main__":
     if(not(verbal_memory)):
         logger.info("Verbal Memory in config.json set to false. Terminating program.")
     else:
-        words:list[str] = []
-        score:int = 0
-        driver.get("https://humanbenchmark.com/login")
+        try:
+            words:list[str] = []
+            score:int = 0
+            driver.get("https://humanbenchmark.com/login")
 
-        input_username(driver,username,logger)
-        input_password(driver,password,logger)
-        click_login(driver,logger)  
+            input_username(driver,username,logger)
+            input_password(driver,password,logger)
+            click_login(driver,logger)  
+                
+            sleep(3) # Wait time to ensure full page loads
+
+            open_verbal_memory(driver,logger)
+            start_verbal_memory(driver,logger)
             
-        sleep(3) # Wait time to ensure full page loads
+            while score < 9950: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
+                words,score = play(driver,words,score,logger)
+                sleep(0.02)
+                if(score%1_000==0):
+                    logger.info(f"Current Verbal Memory Score: {score:,.0f}")
 
-        open_verbal_memory(driver,logger)
-        start_verbal_memory(driver,logger)
-        
-        while score < 9950: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
-            words,score = play(driver,words,score,logger)
-            sleep(0.02)
-            if(score%1_000==0):
-                logger.info(f"Current Verbal Memory Score: {score:,.0f}")
+            for _ in range(3):
+                words,score = lose(driver,words,score,logger)
+                sleep(0.02)
 
-        for _ in range(3):
-            words,score = lose(driver,words,score,logger)
-            sleep(0.02)
+            save_score(driver,logger)
 
-        save_score(driver,logger)
-
-        driver.close()
+            driver.close()
+        except Exception as e:
+            logger.critical(f"Game crashed. Official error: {str(e)}. Terminating the program.")
+            raise Exception(f"Game crashed. Official error: {str(e)}. Terminating the program.")
