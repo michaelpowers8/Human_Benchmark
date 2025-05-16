@@ -97,6 +97,8 @@ if __name__ == "__main__":
         while score < 10_000: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
             words,score = play(driver,words,score,logger)
             sleep(0.02)
+            if(score%1_000==0):
+                logger.info(f"Current Verbal Memory Score: {score:,.0f}")
         
         sleep(post_test_delay)
         save_score(driver,logger)
