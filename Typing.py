@@ -14,18 +14,24 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
         letters_container:WebElement = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "letters"))
         )
+        logger.info("Letter container found.")
+        
+        # Extract all character spans
+        character_spans:list[WebElement] = letters_container.find_elements(By.TAG_NAME, "span")
+        logger.info("Character spans created.")
+        
+        # Create a list of characters (including spaces and punctuation)
+        characters:list[str] = [span.text if len(span.text)>0 else " " for span in character_spans]
+        logger.info("List of characters created from span.")
+        message:str = "".join(characters)
+        logger.info(f"Message created: {message}")
 
         # Click the typing area to focus it
         typing_area:WebElement = driver.find_element(By.CLASS_NAME, "letters")
         typing_area.click()
-        
-        # Extract all character spans
-        character_spans:list[WebElement] = letters_container.find_elements(By.TAG_NAME, "span")
-        
-        # Create a list of characters (including spaces and punctuation)
-        characters:list[str] = [span.text if len(span.text)>0 else " " for span in character_spans]
-        message:str = "".join(characters)
-        
+        logger.info("Typing area found and clicked")
+
+        #typing_area.send_keys(message)
         typewrite(message,interval=0.0)
         logger.info("Typing test successfully completed.")
         return None
@@ -52,7 +58,7 @@ def analyze_wpm_results(driver:Chrome,logger:Logger) -> bool|Exception:
         save:bool = False
         if(isinstance(wpm_number,int) and wpm_number>=20_000):
             save:bool = True
-        logger.info("Words per minute successfully analyzed.")
+        logger.info(f"Words per minute successfully analyzed. Typing speed of {wpm_number:,.0f} {'will' if save else 'will not'} be saved.")
         return save
     except Exception as e:
         logger.critical(f"Failed to analyze words per minute. Official error: {str(e)}. Terminating program.")
