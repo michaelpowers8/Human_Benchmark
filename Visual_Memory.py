@@ -93,5 +93,5 @@ if __name__ == "__main__":
             save_score(driver,logger)
             driver.close()
         except Exception as e:
-            logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")
-            raise Exception(f"Game crashed. Official error: {str(e)}. Restarting the program.")
+            logger.critical(f"Game crashed. Official error: {str(e)}. Terminating the program.")
+            raise Exception(f"Game crashed. Official error: {str(e)}. Terminating the program.")
