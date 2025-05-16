@@ -80,23 +80,25 @@ if __name__ == "__main__":
     if(not(verbal_memory)):
         logger.info("Verbal Memory in config.json set to false. Terminating program.")
     else:
-        while True:
-            words:list[str] = []
-            score:int = 0
-            driver.get("https://humanbenchmark.com/login")
+        words:list[str] = []
+        score:int = 0
+        driver.get("https://humanbenchmark.com/login")
 
-            input_username(driver,username,logger)
-            input_password(driver,password,logger)
-            click_login(driver,logger)  
-                
-            sleep(3) # Wait time to ensure full page loads
+        input_username(driver,username,logger)
+        input_password(driver,password,logger)
+        click_login(driver,logger)  
+            
+        sleep(3) # Wait time to ensure full page loads
 
-            open_verbal_memory(driver,logger)
-            start_verbal_memory(driver,logger)
-            
-            while score < 10_000: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
-                words = play(driver,words,score,logger)
-                sleep(0.02)
-            
-            sleep(post_test_delay)
-            save_score(driver,logger)
+        open_verbal_memory(driver,logger)
+        start_verbal_memory(driver,logger)
+        
+        while score < 10_000: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
+            words = play(driver,words,score,logger)
+            sleep(0.02)
+        
+        sleep(post_test_delay)
+        save_score(driver,logger)
+
+        driver.quit()
+        driver.close()
