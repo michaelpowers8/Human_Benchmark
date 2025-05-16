@@ -66,8 +66,8 @@ if __name__ == "__main__":
         score:int = 0
         driver.get("https://humanbenchmark.com/login")
 
-        input_username(driver,username)
-        input_password(driver,password)
+        input_username(driver,username,logger)
+        input_password(driver,password,logger)
         click_login(driver,logger)  
         
         sleep(3)
