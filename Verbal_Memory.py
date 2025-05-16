@@ -11,7 +11,7 @@ def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[st
     try:
         # Wait for the word container to load
         word:str = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word").text
-        if(not(word==words[-1])):
+        if(len(words)>0 and word==words[-1]):
             return words,score
         if(word in words):
             # Wait for the button to be clickable and then click it
@@ -28,7 +28,7 @@ def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[st
                 raise Exception(f"{str(e)}")
         else:
             # Wait for the button to be clickable and then click it
-            words.append(word.text)
+            words.append(word)
             try:
                 new_button:WebElement = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='NEW']"))
