@@ -7,34 +7,6 @@ from time import sleep
 from warnings import filterwarnings
 from Global import *
 
-def open_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the play link to be clickable (10 second timeout)
-        play_link:WebElement = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/verbal-memory'] svg[data-icon='play-circle']").find_element(By.XPATH, "..")
-        
-        sleep(1)
-        # Click the link
-        play_link.click()
-        logger.info("Successfully opened Verbal Memory.")
-    except Exception as e:
-        logger.critical(f"Verbal Memory failed to open. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-    
-def start_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the start button to be clickable (10 second timeout)
-        start_button:WebElement = WebDriverWait(driver, 10).until(
-                        EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='Start']"))
-                    )
-        
-        sleep(1)
-        # Click the link
-        start_button.click()
-        logger.info("Verbal Memory successfully started playing.")
-    except Exception as e:
-        logger.critical(f"Verbal Memory failed to start playing. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-
 def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> tuple[list[str],int]|Exception:
     try:
         # Wait for the word container to load
@@ -127,8 +99,8 @@ if __name__ == "__main__":
                 
             sleep(3) # Wait time to ensure full page loads
 
-            open_verbal_memory(driver,logger)
-            start_verbal_memory(driver,logger)
+            open_game(driver,logger,"verbal-memory")
+            start_game(driver,logger,"verbal-memory")
             
             while score < 9950: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
                 words,score = play(driver,words,score,logger)
