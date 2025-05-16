@@ -116,6 +116,7 @@ if __name__ == "__main__":
         input_username(driver,"micpowers98@gmail.com")
         input_password(driver,"Idnarb10!!")
         click_login(driver)  
+        
         sleep(3)
 
         open_visual_memory(driver)
