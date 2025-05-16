@@ -14,7 +14,7 @@ def create_logger() -> Logger:
     # Only add handlers if none exist (avoid duplicate logs)
     if not logger.handlers:
         current_day:datetime = datetime.now().strftime("%Y%m%d")
-        file_handler = FileHandler(f"Human_Benchmark_{current_day.year}{current_day.month}{current_day.day}.log", mode="a")
+        file_handler = FileHandler(f"Human_Benchmark_{current_day}.log", mode="a")
         formatter = Formatter('%(asctime)s %(message)s')
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
