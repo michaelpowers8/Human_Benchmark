@@ -34,7 +34,7 @@ def start_verbal_memory(driver:Chrome,logger:Logger) -> None|Exception:
         logger.critical(f"Verbal Memory failed to start playing. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {e}")
 
-def play(driver:Chrome,words:list[str],logger:Logger) -> list[str]|Exception:
+def play(driver:Chrome,words:list[str],score:int,logger:Logger) -> list[str]|Exception:
     try:
         # Wait for the word container to load
         word_element = driver.find_element(By.CSS_SELECTOR, "div.css-1qvtbrk.e19owgy78 div.word")
@@ -64,7 +64,7 @@ def play(driver:Chrome,words:list[str],logger:Logger) -> list[str]|Exception:
             except Exception as e:
                 logger.critical(f"Error clicking the NEW button. Official Error: {e}. Terminating the program.")
                 raise Exception(f"{str(e)}")
-        return words
+        return words,score
     except Exception as e:
         logger.critical(f"Exception occurred while playing. Official Error: {str(e)}")
         raise Exception(f"{str(e)}")
@@ -95,7 +95,7 @@ if __name__ == "__main__":
             start_verbal_memory(driver,logger)
             
             while score < 10_000: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
-                words = play(driver,words,logger)
+                words = play(driver,words,score,logger)
                 sleep(0.02)
             
             sleep(post_test_delay)
