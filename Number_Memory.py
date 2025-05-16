@@ -7,34 +7,6 @@ from time import sleep
 from warnings import filterwarnings
 from Global import *
 
-def open_number_memory(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the play link to be clickable (10 second timeout)
-        play_link:WebElement = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/number-memory'] svg[data-icon='play-circle']").find_element(By.XPATH, "..")
-        
-        sleep(1)
-        # Click the link
-        play_link.click()
-        logger.info("Successfully opened Number Memory.")
-    except Exception as e:
-        logger.critical(f"Number Memory failed to open. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-    
-def start_number_memory(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the start button to be clickable (10 second timeout)
-        start_button:WebElement = WebDriverWait(driver, 10).until(
-                        EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='Start']"))
-                    )
-        
-        sleep(1)
-        # Click the link
-        start_button.click()
-        logger.info("Number Memory successfully started playing.")
-    except Exception as e:
-        logger.critical(f"Number Memory failed to start playing. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-
 def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None|Exception:
     try:
         # Wait for at least one active square to appear
@@ -52,7 +24,6 @@ def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None|Excepti
         if(lose):
             input_element.send_keys("23187932981")
         else:
-            print(big_number)
             input_element.send_keys(big_number)
 
         # Wait for the start button to be clickable (10 second timeout)
