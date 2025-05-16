@@ -8,20 +8,6 @@ from warnings import filterwarnings
 from Global import *
 from pyautogui import typewrite
 
-def open_typing(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the play link to be clickable (10 second timeout)
-        play_link = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/typing'] svg[data-icon='play-circle']").find_element(By.XPATH, "..")
-        
-        sleep(1)
-        # Click the link
-        play_link.click()
-        logger.info("Successfully opened Typing.")
-        return None
-    except Exception as e:
-        logger.critical(f"Typing failed to open. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-
 def play(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for the letters container to load
