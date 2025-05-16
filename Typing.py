@@ -6,7 +6,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from time import sleep
 from warnings import filterwarnings
 from Global import *
-from pyautogui import typewrite
+from pyautogui import typewrite,PAUSE
 
 def play(driver:Chrome,logger:Logger) -> None|Exception:
     try:
@@ -24,8 +24,9 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
         
         # Create a list of characters (including spaces and punctuation)
         characters:list[str] = [span.text if len(span.text)>0 else " " for span in character_spans]
+        message:str = "".join(characters)
         
-        typewrite("".join(characters))
+        typewrite(message,interval=0.0)
         logger.info("Typing test successfully completed.")
         return None
     except Exception as e:
