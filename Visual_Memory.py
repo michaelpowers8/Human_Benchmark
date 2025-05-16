@@ -67,32 +67,33 @@ if __name__ == "__main__":
     if(not(visual_memory)):
         logger.info("Visual Memory set to false in config.json. Terminating program.")
     else:
-        while True:
-            try:
-                score:int = 0
-                driver.get("https://humanbenchmark.com/login")
+        try:
+            score:int = 0
+            driver.get("https://humanbenchmark.com/login")
 
-                input_username(driver,username,logger)
-                input_password(driver,password,logger)
-                click_login(driver,logger)  
-                
-                sleep(3) # Wait time to ensure full page loads
+            input_username(driver,username,logger)
+            input_password(driver,password,logger)
+            click_login(driver,logger)  
+            
+            sleep(3) # Wait time to ensure full page loads
 
-                open_visual_memory(driver,logger)
-                start_visual_memory_game(driver,logger)
-                        
-                while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
-                    play(driver,logger)
-                    score += 1
-                    sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
-                    if(score%25==0):
-                        logger.info(f"Current Visual Memory Score: {score:,.0f}")
+            open_visual_memory(driver,logger)
+            start_visual_memory_game(driver,logger)
+                    
+            while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
+                play(driver,logger)
+                score += 1
+                sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
+                if(score%25==0):
+                    logger.info(f"Current Visual Memory Score: {score:,.0f}")
 
-                logger.info("250 levels completed.")
-                sleep(post_test_delay) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
-                
-                save_score(driver,logger)
-            except Exception as e:
-                logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")
-                driver.quit()
-                driver:Chrome = load_driver(logger)
+            logger.info("250 levels completed. Saving score and terminating the program")
+            sleep(post_test_delay) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
+            
+            save_score(driver,logger)
+            driver.quit()
+            driver.close()
+        except Exception as e:
+            logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")
+            driver.quit()
+            driver:Chrome = load_driver(logger)
