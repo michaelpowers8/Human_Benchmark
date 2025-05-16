@@ -86,13 +86,30 @@ def start_visual_memory_game(driver:Chrome):
     except Exception as e:
         print(f"Error: {e}")
 
+def play(driver:Chrome) -> None|Exception:
+    try:
+        # Wait for at least one active square to appear
+        active_squares = WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located(
+                (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
+            )
+        )
+        sleep(3.5)
+        current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
+        for current_square in current_squares:
+            for square in active_squares:                
+                if(current_square.location == square.location):
+                    current_square.click()
+                    active_squares.remove(square)
+                    break
+        return
+    except Exception as e:
+        raise Exception(f"Error: {str(e)}")
+
 if __name__ == "__main__":
     filterwarnings('ignore')
-
     driver:Chrome = load_driver()
-
     while True:
-        words:list[str] = []
         score:int = 0
         driver.get("https://humanbenchmark.com/login")
 
@@ -105,26 +122,11 @@ if __name__ == "__main__":
         start_visual_memory_game(driver)
                 
         while score < 100:
-            try:
-                # Wait for at least one active square to appear
-                active_squares = WebDriverWait(driver, 10).until(
-                    EC.presence_of_all_elements_located(
-                        (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
-                    )
-                )
-                sleep(3.5)
-                current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
-                for current_square in current_squares:
-                    for index,square in enumerate(active_squares):                
-                        if(current_square.location == square.location):
-                            current_square.click()
-                            active_squares.remove(square)
-                            break
-            except Exception as e:
-                print(str(e))
+            play(driver)
+            score += 1
             sleep(1.5)
 
-        sleep(5)
+        sleep(1_000_000)
         
         try:
             # Wait for button to be clickable (up to 10 seconds)
