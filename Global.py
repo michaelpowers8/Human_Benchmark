@@ -20,7 +20,7 @@ def create_logger() -> Logger:
         logger.addHandler(file_handler)
     return logger
 
-def load_configuration() -> tuple[str,str,bool,bool,bool,bool,bool,bool,bool,bool]:
+def load_configuration() -> tuple[str,str,int|float,bool,bool,bool,bool,bool,bool,bool,bool]:
     with open("Config.json","r") as file:
         configuration = json.load(file)
     username:str = configuration["Username"]
@@ -106,12 +106,12 @@ def open_game(driver:Chrome,logger:Logger,game:str) -> None|Exception:
         sleep(1)
         # Click the link
         play_link.click()
-        logger.info("Successfully opened Number Memory.")
+        logger.info(f"Successfully opened {game.replace("-"," ").title()}.")
     except Exception as e:
-        logger.critical(f"Number Memory failed to open. Terminating program. Official error: {str(e)}")
+        logger.critical(f"{game.replace("-"," ").title()} failed to open. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {e}")
     
-def start_game(driver:Chrome,logger:Logger) -> None|Exception:
+def start_game(driver:Chrome,logger:Logger,game:str) -> None|Exception:
     try:
         # Wait for the start button to be clickable (10 second timeout)
         start_button:WebElement = WebDriverWait(driver, 10).until(
@@ -121,9 +121,9 @@ def start_game(driver:Chrome,logger:Logger) -> None|Exception:
         sleep(1)
         # Click the link
         start_button.click()
-        logger.info("Number Memory successfully started playing.")
+        logger.info(f"{game.replace("-"," ").title()} successfully started playing.")
     except Exception as e:
-        logger.critical(f"Number Memory failed to start playing. Terminating program. Official error: {str(e)}")
+        logger.critical(f"{game.replace("-"," ").title()} failed to start playing. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {e}")
 
 def save_score(driver:Chrome,logger:Logger,max_retries:int=5) -> None|Exception:
