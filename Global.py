@@ -94,15 +94,20 @@ def click_login(driver:Chrome,logger:Logger) -> None|Exception:
         logger.critical(f"Login button failed to be clicked. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {str(e)}")
 
-def save_score(driver:Chrome,logger:Logger):
-    try:
-        # Wait for button to be clickable (up to 10 seconds)
-        save_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.css-qm6rs9"))
-        )
-        sleep(1)
-        save_button.click()
-        logger.info("Score successfully saved.")
-    except Exception as e:
-        logger.critical(f"Score failed to save. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
+def save_score(driver:Chrome,logger:Logger,max_retries:int=5) -> None|Exception:
+    for attempt in range(max_retries):
+        try:
+            # Wait for button to be clickable (up to 10 seconds)
+            save_button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.css-qm6rs9"))
+            )
+            sleep(1)
+            save_button.click()
+            logger.info("Score successfully saved.")
+            return
+        except Exception as e:
+            if(attempt<4):
+                logger.error(f"Score failed to save. Retrying to save. Official error: {str(e)}")
+            else:
+                logger.critical(f"Too many failed save score attempts. Terminating program. Official error: {str(e)}")
+                raise Exception(f"Error: {e}")
