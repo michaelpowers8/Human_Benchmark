@@ -65,7 +65,7 @@ if __name__ == "__main__":
         sleep(3) # Wait time to ensure full page loads
 
         open_game(driver,logger,"number-memory")
-        start_game(driver,logger)
+        start_game(driver,logger,"number-memory")
 
         while(score < 98):
             play(driver,logger,score+1,False)
