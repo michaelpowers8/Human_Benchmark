@@ -94,5 +94,4 @@ if __name__ == "__main__":
             driver.close()
         except Exception as e:
             logger.critical(f"Game crashed. Official error: {str(e)}. Restarting the program.")
-            driver.quit()
-            driver:Chrome = load_driver(logger)
+            raise Exception(f"Game crashed. Official error: {str(e)}. Restarting the program.")
