@@ -33,7 +33,7 @@ def start_visual_memory_game(driver:Chrome,logger:Logger) -> None|Exception:
         logger.critical(f"Visual Memory failed to start playing. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {e}")
 
-def play(driver:Chrome,logger:Logger) -> None|Exception:
+def play(driver:Chrome,logger:Logger,level_number:int) -> None|Exception:
     try:
         # Wait for at least one active square to appear
         active_squares:list[WebElement] = WebDriverWait(driver, 10).until(
@@ -51,7 +51,7 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
                     current_square.click()
                     active_squares.remove(square)
                     break
-        logger.info("Level successfully completed.")
+        logger.info(f"Level {level_number:,.0f} successfully completed.")
     except Exception as e:
         logger.critical(f"Level failed to complete. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {str(e)}")
@@ -81,7 +81,7 @@ if __name__ == "__main__":
             start_visual_memory_game(driver,logger)
                     
             while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
-                play(driver,logger)
+                play(driver,logger,score+1)
                 score += 1
                 sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
                 if(score%25==0):
