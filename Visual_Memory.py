@@ -36,7 +36,7 @@ def start_visual_memory_game(driver:Chrome,logger:Logger) -> None|Exception:
 def play(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for at least one active square to appear
-        active_squares = WebDriverWait(driver, 10).until(
+        active_squares:list[WebElement] = WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located(
                 (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
             )
@@ -44,7 +44,7 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
         WebDriverWait(driver, 5).until(
             EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.active.css-lxtdud"))
         )
-        current_squares = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
+        current_squares:list[WebElement] = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
         for current_square in current_squares:
             for square in active_squares:                
                 if(current_square.location == square.location):
