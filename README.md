@@ -33,8 +33,8 @@ Edit `Config.json` to set your preferences:
 
 ```json
 {
-  "Username": "username@example.com",
-  "Password": "your_password",
+  "Username": "my-username@example.com",
+  "Password": "my-password",
   "Post_Test_Score_Delay": 2,
   "Visual_Memory": true,
   "Verbal_Memory": true,
