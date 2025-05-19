@@ -55,7 +55,7 @@ if __name__ == "__main__":
             open_game(driver,logger,'memory')
             start_game(driver,logger,'visual-memory')
                     
-            while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
+            while score < visual_memory_max_score: # Human benchmark crashes at a score beyond 250, so this is the maximum
                 play(driver,logger,score+1)
                 score += 1
                 if(score%25==0):

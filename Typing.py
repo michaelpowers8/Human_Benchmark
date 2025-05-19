@@ -39,7 +39,7 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
         logger.critical(f"Typing test failed. Official Error: {str(e)}. Terminating program.")
         raise Exception(f"Typing test failed. Official Error: {str(e)}. Terminating program.")
     
-def analyze_wpm_results(driver:Chrome,logger:Logger) -> bool|Exception:
+def analyze_wpm_results(driver:Chrome,logger:Logger,min_score:int) -> bool|Exception:
     try:
         # Wait for the WPM element to load
         wpm_element:WebElement = WebDriverWait(driver, 10).until(
@@ -56,7 +56,7 @@ def analyze_wpm_results(driver:Chrome,logger:Logger) -> bool|Exception:
         if(wpm_number.isdigit()):
             wpm_number = int(wpm_number)
         save:bool = False
-        if(isinstance(wpm_number,int) and wpm_number>=20_000):
+        if(isinstance(wpm_number,int) and wpm_number>=min_score):
             save:bool = True
         logger.info(f"Words per minute successfully analyzed. Typing speed of {wpm_number:,.0f} {'will' if save else 'will not'} be saved.")
         return save
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         play(driver,logger)
         
         sleep(post_test_delay)
-        save:bool = analyze_wpm_results(driver,logger)
+        save:bool = analyze_wpm_results(driver,logger,typing_min_score)
         if(save):
             save_score(driver,logger)
 
