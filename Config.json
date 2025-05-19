@@ -1,13 +1,13 @@
 {
     "Username":"my-username@example.com",
     "Password":"my-password",
-    "Visual_Memory":true,
-    "Verbal_Memory":true,
-    "Typing":true,
-    "Number_Memory":false,
-    "Reaction_Time":false,
-    "Sequence_Memory":false,
-    "Aim_Trainer":false,
-    "Chimp_Test":false,
+    "Visual_Memory":[true,100],
+    "Verbal_Memory":[true,9950],
+    "Typing":[true,20000],
+    "Number_Memory":[true,300],
+    "Reaction_Time":[false,40],
+    "Sequence_Memory":[true,300],
+    "Aim_Trainer":[false,50],
+    "Chimp_Test":[false,100],
     "Post_Test_Score_Delay":1
 }
