@@ -107,7 +107,9 @@ def click_login(driver:Chrome,logger:Logger) -> None|Exception:
 def open_game(driver:Chrome,logger:Logger,game:str) -> None|Exception:
     try:
         # Wait for the play link to be clickable (10 second timeout)
-        play_link:WebElement = driver.find_element(By.CSS_SELECTOR, f"a[href*='/tests/{game}'] svg[data-icon='play-circle']").find_element(By.XPATH, "..")
+        play_link:WebElement = WebDriverWait(driver, 10).until(
+                                EC.element_to_be_clickable(
+                                    (By.CSS_SELECTOR, f"a[href*='/tests/{game}'] svg[data-icon='play-circle']")))
         
         sleep(1)
         # Click the link
