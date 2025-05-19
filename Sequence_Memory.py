@@ -38,10 +38,14 @@ if(__name__ == "__main__"):
     filterwarnings('ignore')
     logger:Logger = create_logger()
     driver:Chrome = load_driver(logger)
-    username,password,post_test_delay,visual_memory,\
-        verbal_memory,typing,number_memory,\
-            reaction_time,sequence_memory,\
-                aim_trainer,chimp_test = load_configuration()
+    username,password,post_test_delay,\
+        visual_memory,visual_memory_max_score,\
+            verbal_memory,verbal_memory_max_score,\
+                typing,typing_min_score,\
+                    number_memory,number_memory_max_score,\
+                        reaction_time,reaction_time_max_score,\
+                            sequence_memory,sequence_memory_max_score,\
+                                aim_trainer,chimp_test = load_configuration()
     if(not(sequence_memory)):
         logger.info("Visual Memory set to false in config.json. Terminating program.")
     else:
@@ -56,7 +60,7 @@ if(__name__ == "__main__"):
             open_game(driver,logger,'sequence')
             start_game(driver,logger,'sequence')
 
-            while(score<100):
+            while(score<sequence_memory_max_score):
                 play(driver,score+1)
                 score += 1
         except Exception as e:

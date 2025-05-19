@@ -68,10 +68,14 @@ if __name__ == "__main__":
     filterwarnings('ignore')
     logger:Logger = create_logger()
     driver:Chrome = load_driver(logger)
-    username,password,post_test_delay,visual_memory,\
-        verbal_memory,typing,number_memory,\
-            reaction_time,sequence_memory,\
-                aim_trainer,chimp_test = load_configuration()
+    username,password,post_test_delay,\
+        visual_memory,visual_memory_max_score,\
+            verbal_memory,verbal_memory_max_score,\
+                typing,typing_min_score,\
+                    number_memory,number_memory_max_score,\
+                        reaction_time,reaction_time_max_score,\
+                            sequence_memory,sequence_memory_max_score,\
+                                aim_trainer,chimp_test = load_configuration()
     if(not(typing)):
         logger.info("Typing in config.json set to false. Terminating program.")
     else:

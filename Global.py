@@ -26,15 +26,28 @@ def load_configuration() -> tuple[str,str,int|float,bool,bool,bool,bool,bool,boo
     username:str = configuration["Username"]
     password:str = configuration["Password"]
     post_test_delay:int|float = configuration["Post_Test_Score_Delay"]
-    visual_memory:bool = configuration["Visual_Memory"]
-    verbal_memory:bool = configuration["Verbal_Memory"]
-    typing:bool = configuration["Typing"]
-    number_memory:bool = configuration["Number_Memory"]
-    reaction_time:bool = configuration["Reaction_Time"]
-    sequence_memory:bool = configuration["Sequence_Memory"]
-    aim_trainer:bool = configuration["Aim_Trainer"]
-    chimp_test:bool = configuration["Chimp_Test"]
-    return username,password,post_test_delay,visual_memory,verbal_memory,typing,number_memory,reaction_time,sequence_memory,aim_trainer,chimp_test
+    visual_memory:bool = configuration["Visual_Memory"][0]
+    visual_memory_max_score:int = configuration["Visual_Memory"][1]
+    verbal_memory:bool = configuration["Verbal_Memory"][0]
+    verbal_memory_max_score:int = configuration["Verbal_Memory"][1]
+    typing:bool = configuration["Typing"][0]
+    typing_min_score:int = configuration["Typing"][1]
+    number_memory:bool = configuration["Number_Memory"][0]
+    number_memory_max_score:int = configuration["Number_Memory"][1]
+    reaction_time:bool = configuration["Reaction_Time"][0]
+    reaction_time_max_score:int = configuration["Reaction_Time"][1]
+    sequence_memory:bool = configuration["Sequence_Memory"][0]
+    sequence_memory_max_score:bool = configuration["Sequence_Memory"][1]
+    aim_trainer:bool = configuration["Aim_Trainer"][0]
+    chimp_test:bool = configuration["Chimp_Test"][0]
+    return username,password,post_test_delay,\
+        visual_memory,visual_memory_max_score,\
+            verbal_memory,verbal_memory_max_score,\
+                typing,typing_min_score,\
+                    number_memory,number_memory_max_score,\
+                        reaction_time,reaction_time_max_score,\
+                            sequence_memory,sequence_memory_max_score,\
+                                aim_trainer,chimp_test
 
 def load_driver(logger:Logger) -> Chrome:
     # WebDriver Chrome
