@@ -1,4 +1,3 @@
-# <div class="square" style="width: 132px; height: 132px; border-width: 8.25px; border-radius: 16.5px;"></div>
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -60,9 +59,10 @@ if(__name__ == "__main__"):
             open_game(driver,logger,'sequence')
             start_game(driver,logger,'sequence')
 
-            while(score<sequence_memory_max_score):
+            while(score<sequence_memory_max_score): # Implement a max score that can be configred in Config.json.
                 play(driver,score+1)
                 score += 1
+
         except Exception as e:
             logger.critical(f"Game crashed. Official error: {str(e)}. Terminating the program.")
             raise Exception(f"Game crashed. Official error: {str(e)}. Terminating the program.")

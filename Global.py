@@ -52,7 +52,6 @@ def load_configuration() -> tuple[str,str,int|float,bool,bool,bool,bool,bool,boo
 def load_driver(logger:Logger) -> Chrome:
     # WebDriver Chrome
     options = ChromeOptions()
-    #options.add_argument('--headless=new')
     # adding argument to disable the AutomationControlled flag 
     options.add_argument("--disable-blink-features=AutomationControlled") 
     # exclude the collection of enable-automation switches 

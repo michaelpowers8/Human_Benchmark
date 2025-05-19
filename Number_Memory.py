@@ -69,7 +69,7 @@ if __name__ == "__main__":
         open_game(driver,logger,"number-memory")
         start_game(driver,logger,"number-memory")
 
-        while(score < number_memory_max_score):
+        while(score < number_memory_max_score): # Implement a max score that can be configred in Config.json.
             play(driver,logger,score+1,False)
             score += 1
         play(driver,logger,score+1,True)

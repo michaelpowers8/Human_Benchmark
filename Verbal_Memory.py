@@ -78,7 +78,7 @@ if __name__ == "__main__":
         open_game(driver,logger,"verbal-memory")
         start_game(driver,logger,"verbal-memory")
         
-        while score < verbal_memory_max_score: # Human benchmark crashes at a score beyond 10,000, so this is the maximum.
+        while score < verbal_memory_max_score: # Implement a max score that can be configred in Config.json.
             words,score = play(driver,words,score,logger)
             if(score%500==0):
                 logger.info(f"Current Verbal Memory Score: {score:,.0f}")

@@ -55,13 +55,13 @@ if __name__ == "__main__":
             open_game(driver,logger,'memory')
             start_game(driver,logger,'visual-memory')
                     
-            while score < visual_memory_max_score: # Human benchmark crashes at a score beyond 250, so this is the maximum
+            while score < visual_memory_max_score: # Implement a max score that can be configred in Config.json.
                 play(driver,logger,score+1)
                 score += 1
                 if(score%25==0):
                     logger.info(f"Current Visual Memory Score: {score:,.0f}")
 
-            logger.info("250 levels completed. Saving score and terminating the program")
+            logger.info(f"{visual_memory_max_score:,.0f} levels completed. Saving score and terminating the program")
             sleep(post_test_delay) # Here to allow user to manually save because if save_score fails, all time spent accumulating the score will be lost
             
             save_score(driver,logger)
