@@ -6,33 +6,6 @@ from time import sleep
 from warnings import filterwarnings
 from Global import *
 
-def open_visual_memory(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the play link to be clickable (10 second timeout)
-        play_link:WebElement = driver.find_element(By.CSS_SELECTOR, "a[href*='/tests/memory']")
-        sleep(0.5)
-        # Click the link
-        play_link.click()
-        logger.info("Visual Memory successfully opened.")
-    except Exception as e:
-        logger.critical(f"Visual Memory failed to open. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-    
-def start_visual_memory_game(driver:Chrome,logger:Logger) -> None|Exception:
-    try:
-        # Wait for the start button to be clickable (10 second timeout)
-        start_button:WebElement = WebDriverWait(driver, 10).until(
-                        EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='Start']"))
-                    )
-        
-        sleep(0.5)
-        # Click the link
-        start_button.click()
-        logger.info("Visual Memory successfully started playing.")
-    except Exception as e:
-        logger.critical(f"Visual Memory failed to start playing. Terminating program. Official error: {str(e)}")
-        raise Exception(f"Error: {e}")
-
 def play(driver:Chrome,logger:Logger,level_number:int) -> None|Exception:
     try:
         # Wait for at least one active square to appear
@@ -74,11 +47,9 @@ if __name__ == "__main__":
             input_username(driver,username,logger)
             input_password(driver,password,logger)
             click_login(driver,logger)  
-            
-            sleep(3) # Wait time to ensure full page loads
 
-            open_visual_memory(driver,logger)
-            start_visual_memory_game(driver,logger)
+            open_game(driver,logger,'memory')
+            start_game(driver,logger,'visual-memory')
                     
             while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
                 play(driver,logger,score+1)

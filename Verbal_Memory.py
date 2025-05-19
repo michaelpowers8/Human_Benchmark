@@ -70,8 +70,6 @@ if __name__ == "__main__":
         input_username(driver,username,logger)
         input_password(driver,password,logger)
         click_login(driver,logger)  
-            
-        sleep(3) # Wait time to ensure full page loads
 
         open_game(driver,logger,"verbal-memory")
         start_game(driver,logger,"verbal-memory")
