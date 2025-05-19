@@ -1,44 +1,41 @@
-# HumanBenchmark Automation
+# Human Benchmark Automation with Selenium
 
-This project automates various tests on the HumanBenchmark website (https://humanbenchmark.com) using Selenium WebDriver. The scripts can perform tests like Visual Memory, Verbal Memory, Number Memory, and Typing with configurable settings.
+## Overview
+
+This project demonstrates the capabilities of Selenium WebDriver for browser automation by interacting with the Human Benchmark cognitive testing platform. The scripts are designed for educational purposes to study Selenium's efficiency in a consistent web environment, not for cheating on leaderboards.
 
 ## Features
 
-- Automated testing for multiple HumanBenchmark games:
+- **Multiple Test Automation**:
   - Visual Memory
   - Verbal Memory
+  - Typing Test
   - Number Memory
-  - Typing
-- Configurable through `Config.json`
-- Detailed logging of all operations
-- Headless browser option available
+- **Configurable Settings** via `Config.json`
+- **Detailed Logging** with timestamps
+- **Headless Mode Support** (commented out)
+- **Anti-Detection Measures** to avoid bot detection
 
-## Requirements
+## Prerequisites
 
 - Python 3.x
-- Selenium
+- Chrome browser
 - ChromeDriver (matching your Chrome version)
-- PyAutoGUI (for Typing test)
-- Google Chrome browser
-
-## Installation
-
-1. Clone this repository
-2. Install required packages:
-   ```
-   pip install selenium pyautogui
-   ```
-3. Download ChromeDriver from https://sites.google.com/chromium.org/driver/ and ensure it's in your PATH
+- Required Python packages:
+  ```
+  selenium
+  pyautogui
+  ```
 
 ## Configuration
 
-Edit the `Config.json` file to set your preferences:
+Edit `Config.json` to set your preferences:
 
 ```json
 {
-  "Username": "my-username@example.com",
-  "Password": "my-password",
-  "Post_Test_Score_Delay": 3,
+  "Username": "your_username",
+  "Password": "your_password",
+  "Post_Test_Score_Delay": 2,
   "Visual_Memory": true,
   "Verbal_Memory": true,
   "Typing": true,
@@ -50,28 +47,30 @@ Edit the `Config.json` file to set your preferences:
 }
 ```
 
-## Usage
+## How to Run
 
-Run individual test scripts:
+1. Clone the repository
+2. Install dependencies: `pip install selenium pyautogui`
+3. Configure `Config.json` with your credentials
+4. Run individual test scripts:
+   ```
+   python Visual_Memory.py
+   python Verbal_Memory.py
+   python Typing.py
+   python Number_Memory.py
+   ```
 
-- `Visual_Memory.py`
-- `Verbal_Memory.py`
-- `Number_Memory.py`
-- `Typing.py`
+## Important Notes
 
-Each script will:
-1. Log in to HumanBenchmark using your credentials
-2. Navigate to the specified test
-3. Perform the test according to its logic
-4. Save the score (if configured to do so)
-
-## Notes
-
-- The scripts include intentional "lose" conditions to make scores appear more natural
-- Some tests have maximum score limits to prevent website crashes
-- Logs are saved daily with timestamps in `Human_Benchmark_YYYYMMDD.log`
-- For the typing test, extremely high WPM scores (≥15000) will trigger an automatic save
+- This project is for **educational purposes only**
+- The scripts include intentional delays to mimic human behavior
+- High scores are artificially generated to test system limits
+- The project demonstrates web automation techniques, not legitimate testing strategies
 
 ## Disclaimer
 
-This project is for educational purposes only. Please use responsibly and in accordance with HumanBenchmark's terms of service. The authors are not responsible for any account restrictions that may result from using this automation.
+This automation script is provided for educational purposes to demonstrate Selenium capabilities. The author does not condone using this to gain unfair advantages on the Human Benchmark platform. Users are responsible for their own actions and should respect platform terms of service.
+
+## License
+
+This project is open-source and available for educational use. Commercial use or misuse is prohibited.
