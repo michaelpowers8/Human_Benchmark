@@ -7,6 +7,7 @@ from time import sleep
 from warnings import filterwarnings
 from Global import *
 from pyautogui import typewrite,PAUSE
+from random import uniform
 
 def play(driver:Chrome,logger:Logger) -> None|Exception:
     try:
@@ -32,7 +33,7 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
         logger.info("Typing area found and clicked")
 
         #typing_area.send_keys(message)
-        typewrite(message,interval=0.2)
+        typewrite(message,interval=uniform(0.1,0.2))
         logger.info("Typing test successfully completed.")
         return None
     except Exception as e:
