@@ -97,7 +97,12 @@ def input_password(driver:Chrome,password:str,logger:Logger) -> None|Exception:
 def click_login(driver:Chrome,logger:Logger) -> None|Exception:
     try:
         # Wait for the element to be present (up to 10 seconds)
-        login_button = driver.find_element(By.XPATH, "//input[@type='submit' and @value='Login']")
+        login_button = WebDriverWait(driver, 10).until(
+                                EC.element_to_be_clickable(
+                                    (By.XPATH, "//input[@type='submit' and @value='Login']")
+                                )
+                            )
+        
         login_button.click()
         logger.info("Login successfully clicked. Opening dashboard")
     except Exception as e:
@@ -109,9 +114,10 @@ def open_game(driver:Chrome,logger:Logger,game:str) -> None|Exception:
         # Wait for the play link to be clickable (10 second timeout)
         play_link:WebElement = WebDriverWait(driver, 10).until(
                                 EC.element_to_be_clickable(
-                                    (By.CSS_SELECTOR, f"a[href*='/tests/{game}'] svg[data-icon='play-circle']")))
+                                    (By.CSS_SELECTOR, f"a[href*='/tests/{game}'] svg[data-icon='play-circle']")
+                                )
+                            )
         
-        sleep(1)
         # Click the link
         play_link.click()
         logger.info(f"Successfully opened {game.replace("-"," ").title()}.")
@@ -141,7 +147,6 @@ def save_score(driver:Chrome,logger:Logger,max_retries:int=5) -> None|Exception:
             save_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "button.css-qm6rs9"))
             )
-            sleep(1)
             save_button.click()
             logger.info("Score successfully saved.")
             return
