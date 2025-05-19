@@ -21,7 +21,7 @@ def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None|Excepti
             EC.element_to_be_clickable((By.CSS_SELECTOR, "input[pattern='[0-9]*'][type='text']"))
         )
         if(lose):
-            input_element.send_keys("23187932981")
+            input_element.send_keys("231879374293928383109201804820140749275927536972832981")
         else:
             input_element.send_keys(big_number)
 
@@ -61,8 +61,6 @@ if __name__ == "__main__":
         input_username(driver,username,logger)
         input_password(driver,password,logger)
         click_login(driver,logger)  
-        
-        sleep(3) # Wait time to ensure full page loads
 
         open_game(driver,logger,"number-memory")
         start_game(driver,logger,"number-memory")

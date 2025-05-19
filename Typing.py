@@ -81,8 +81,6 @@ if __name__ == "__main__":
         input_password(driver,password,logger)
         click_login(driver,logger)  
 
-        sleep(3)
-
         open_game(driver,logger,"typing")
         play(driver,logger)
         

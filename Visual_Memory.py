@@ -14,7 +14,7 @@ def play(driver:Chrome,logger:Logger,level_number:int) -> None|Exception:
                 (By.CSS_SELECTOR, "div.active.css-lxtdud.eut2yre1:not(.error)")
             )
         )
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 10).until(
             EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.active.css-lxtdud"))
         )
         current_squares:list[WebElement] = driver.find_elements(By.CSS_SELECTOR, "div.css-lxtdud.eut2yre1")
@@ -54,7 +54,6 @@ if __name__ == "__main__":
             while score < 250: # Human benchmark crashes at a score beyond 250, so this is the maximum
                 play(driver,logger,score+1)
                 score += 1
-                sleep(1.5) # Time between when level ends and new level of blocks is revealed for player to memorize
                 if(score%25==0):
                     logger.info(f"Current Visual Memory Score: {score:,.0f}")
 
