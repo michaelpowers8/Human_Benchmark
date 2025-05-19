@@ -1,76 +1,49 @@
-# Human Benchmark Automation with Selenium
+# HumanBenchmark Automation (Educational Use Only)
 
-## Overview
+This repository contains Python scripts that demonstrate the use of Selenium WebDriver to automate interactions with [humanbenchmark.com](https://humanbenchmark.com). **These scripts are strictly for educational purposes** and should not be used to manipulate leaderboards or disrupt the platform.
 
-This project demonstrates the capabilities of Selenium WebDriver for browser automation by interacting with the Human Benchmark cognitive testing platform. The scripts are designed for educational purposes to study Selenium's efficiency in a consistent web environment, not for cheating on leaderboards.
+---
 
-## Features
+## ⚠️ Disclaimer
+This project is intended **only for learning purposes**:
+- Demonstrates Selenium WebDriver automation techniques.
+- Shows how to interact with dynamic web elements (login forms, games, etc.).
+- Includes error handling and logging best practices.
 
-- **Multiple Test Automation**:
-  - Visual Memory
-  - Verbal Memory
-  - Typing Test
-  - Number Memory
-- **Configurable Settings** via `Config.json`
-- **Detailed Logging** with timestamps
-- **Headless Mode Support** (commented out)
-- **Anti-Detection Measures** to avoid bot detection
+**Do not use this to spam or cheat on humanbenchmark.com.** Respect the platform's terms of service.
 
-## Prerequisites
+---
 
-- Python 3.x
-- Chrome browser
-- ChromeDriver (matching your Chrome version)
-- Required Python packages:
-  ```
-  selenium
-  pyautogui
-  ```
+## 📦 Included Scripts
+| Script               | Description                                                                 |
+|----------------------|-----------------------------------------------------------------------------|
+| `Global.py`          | Shared utilities (logger, driver setup, login functions).                   |
+| `Visual_Memory.py`   | Automates the Visual Memory test (matches highlighted squares).             |
+| `Verbal_Memory.py`   | Plays the Verbal Memory game (identifies repeated words).                  |
+| `Typing.py`          | Completes the typing test using `pyautogui` for realistic input.            |
+| `Number_Memory.py`   | Solves the Number Memory challenge (recalls increasingly long numbers).     |
+| `Sequence_Memory.py` | Repeats highlighted square sequences in the Sequence Memory test.           |
 
-## Configuration
+---
 
-Edit `Config.json` to set your preferences:
+## ⚙️ Configuration
+1. **Edit `Config.json`** to set:
+   - Login credentials (username/password).
+   - Enable/disable specific tests.
+   - Adjust target scores for each game.
 
+Example `Config.json`:
 ```json
 {
   "Username": "my-username@example.com",
   "Password": "my-password",
-  "Post_Test_Score_Delay": 2,
-  "Visual_Memory": true,
-  "Verbal_Memory": true,
-  "Typing": true,
-  "Number_Memory": true,
-  "Reaction_Time": false,
-  "Sequence_Memory": false,
-  "Aim_Trainer": false,
-  "Chimp_Test": false
+  "Post_Test_Score_Delay": 2.0,
+  "Visual_Memory": [true, 50],
+  "Verbal_Memory": [true, 100],
+  "Typing": [true, 80],
+  "Number_Memory": [true, 15],
+  "Reaction_Time": [false, 0],
+  "Sequence_Memory": [true, 30],
+  "Aim_Trainer": [false],
+  "Chimp_Test": [false]
 }
-```
-
-## How to Run
-
-1. Clone the repository
-2. Install dependencies: `pip install selenium pyautogui`
-3. Configure `Config.json` with your credentials
-4. Run individual test scripts:
-   ```
-   python Visual_Memory.py
-   python Verbal_Memory.py
-   python Typing.py
-   python Number_Memory.py
-   ```
-
-## Important Notes
-
-- This project is for **educational purposes only**
-- The scripts include intentional delays to mimic human behavior
-- High scores are artificially generated to test system limits
-- The project demonstrates web automation techniques, not legitimate testing strategies
-
-## Disclaimer
-
-This automation script is provided for educational purposes to demonstrate Selenium capabilities. The author does not condone using this to gain unfair advantages on the Human Benchmark platform. Users are responsible for their own actions and should respect platform terms of service.
-
-## License
-
-This project is open-source and available for educational use. Commercial use or misuse is prohibited.

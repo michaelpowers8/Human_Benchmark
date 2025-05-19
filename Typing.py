@@ -32,7 +32,7 @@ def play(driver:Chrome,logger:Logger) -> None|Exception:
         logger.info("Typing area found and clicked")
 
         #typing_area.send_keys(message)
-        typewrite(message,interval=0.0)
+        typewrite(message,interval=0.2)
         logger.info("Typing test successfully completed.")
         return None
     except Exception as e:
