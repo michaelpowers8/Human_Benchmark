@@ -19,7 +19,7 @@ This project is intended **only for learning purposes**:
 |----------------------|-----------------------------------------------------------------------------|
 | `Global.py`          | Shared utilities (logger, driver setup, login functions).                   |
 | `Visual_Memory.py`   | Automates the Visual Memory test (matches highlighted squares).             |
-| `Verbal_Memory.py`   | Plays the Verbal Memory game (identifies repeated words).                  |
+| `Verbal_Memory.py`   | Plays the Verbal Memory game (identifies repeated words).                   |
 | `Typing.py`          | Completes the typing test using `pyautogui` for realistic input.            |
 | `Number_Memory.py`   | Solves the Number Memory challenge (recalls increasingly long numbers).     |
 | `Sequence_Memory.py` | Repeats highlighted square sequences in the Sequence Memory test.           |

@@ -71,6 +71,7 @@ def load_driver(logger:Logger) -> Chrome:
     options.add_experimental_option("useAutomationExtension", False)
 
     driver:Chrome = Chrome(options=options)
+    driver.get("https://humanbenchmark.com/login")
     logger.info("Chrome successfully opened")
     return driver
 
@@ -120,6 +121,11 @@ def click_login(driver:Chrome,logger:Logger) -> None|Exception:
     except Exception as e:
         logger.critical(f"Login button failed to be clicked. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {str(e)}")
+
+def login_to_human_benchmark(driver:Chrome,username:str,password:str,logger:Logger):
+    input_username(driver,username,logger)
+    input_password(driver,password,logger)
+    click_login(driver,logger)  
 
 def open_game(driver:Chrome,logger:Logger,game:str) -> None|Exception:
     try:

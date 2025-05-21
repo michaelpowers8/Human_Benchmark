@@ -7,45 +7,69 @@ from time import sleep
 from warnings import filterwarnings
 from Global import *
 
-def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None|Exception:
+def get_big_number(driver:Chrome,logger:Logger) -> str: 
     try:
         # Wait for at least one active square to appear
-        big_number:str = WebDriverWait(driver, 10).until(
+        return WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CLASS_NAME, "big-number")
             )
         ).text
-
+    except Exception as e:
+        logger.critical(f"Failed to get the big number. Terminating program. Official error: {str(e)}")
+        raise Exception(f"Error: {str(e)}")
+    
+def input_answer(driver:Chrome,level_number:int,big_number:str,lose:bool,logger:Logger) -> None:
+    try:
         # Wait for the input element to be present and interactable
         input_element:WebElement = WebDriverWait(driver, 10+(level_number*3)).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "input[pattern='[0-9]*'][type='text']"))
         )
         if(lose):
-            input_element.send_keys("231879374293928383109201804820140749275927536972832981")
+            input_element.send_keys(f"1{big_number}") # Adding an extra 1 to the start of the big number to ensure incorrect number of digits 
         else:
             input_element.send_keys(big_number)
-
-        # Wait for the start button to be clickable (10 second timeout)
+    except Exception as e:
+        logger.critical(f"Failed to input the big number. Terminating program. Official error: {str(e)}")
+        raise Exception(f"Error: {str(e)}")
+    
+def submit_answer(driver:Chrome,logger:Logger) -> None:
+    try:
+          # Wait for the start button to be clickable (10 second timeout)
         submit_button:WebElement = WebDriverWait(driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='Submit']"))
                     )
         submit_button.click()
-
-        if(lose):
-            return None
+    except Exception as e:
+        logger.critical(f"Failed to submit the answer. Terminating program. Official error: {str(e)}")
+        raise Exception(f"Error: {str(e)}")
+    
+def click_next_level(driver:Chrome,logger:Logger) -> None:
+    try:
         # Wait for the start button to be clickable (10 second timeout)
         next_button:WebElement = WebDriverWait(driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-de05nr') and contains(@class, 'e19owgy710') and text()='NEXT']"))
                     )
         next_button.click()
-
-        logger.info(f"Level {level_number:,.0f} -> {big_number} successfully completed.")
     except Exception as e:
-        logger.critical(f"Level failed to complete. Terminating program. Official error: {str(e)}")
+        print(e)
+        print(str(e))
+        logger.critical(f"Failed to move to the next level. Terminating program. Official error: {str(e)}")
         raise Exception(f"Error: {str(e)}")
 
-if __name__ == "__main__":
-    filterwarnings('ignore')
+def play(driver:Chrome,logger:Logger,level_number:int,lose:bool) -> None:
+        big_number:str = get_big_number(driver,logger)
+        input_answer(driver,level_number,big_number,lose,logger)
+        submit_answer(driver,logger)
+        if(lose):
+            logger.info(f"Level {level_number:,.0f} -> {big_number} successfully lost on purpose.")
+            return None
+        else:
+            click_next_level(driver,logger)
+            logger.info(f"Level {level_number:,.0f} -> {big_number} successfully completed.")
+
+def main():
+    filterwarnings('always')
     logger:Logger = create_logger()
     driver:Chrome = load_driver(logger)
     username,password,post_test_delay,\
@@ -56,15 +80,12 @@ if __name__ == "__main__":
                         reaction_time,reaction_time_max_score,\
                             sequence_memory,sequence_memory_max_score,\
                                 aim_trainer,chimp_test = load_configuration()
+    del post_test_delay,visual_memory,visual_memory_max_score,verbal_memory,verbal_memory_max_score,typing,typing_min_score,sequence_memory,sequence_memory_max_score,reaction_time,reaction_time_max_score,aim_trainer,chimp_test
     if(not(number_memory)):
         logger.info("Visual Memory set to false in config.json. Terminating program.")
     else:
         score:int = 0
-        driver.get("https://humanbenchmark.com/login")
-
-        input_username(driver,username,logger)
-        input_password(driver,password,logger)
-        click_login(driver,logger)  
+        login_to_human_benchmark(driver,username,password,logger)
 
         open_game(driver,logger,"number-memory")
         start_game(driver,logger,"number-memory")
@@ -74,4 +95,7 @@ if __name__ == "__main__":
             score += 1
         play(driver,logger,score+1,True)
         
-        save_score()
+        save_score(driver,logger)
+
+if __name__ == "__main__":
+    main()
